@@ -2,22 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Challenge;
+using Challenge.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Desafio.Controllers
+namespace Challenge.Controllers
 {
 
-//Classe controladora do cliente
+//Classe controladora do cliente, lida com as requisições
+
 [ApiController]
 [Route("api/[controller]")]
 public class ClientController : ControllerBase
 {
+    //referência à classe serviço o cliente
+    private static ClientService _clientService = new ClientService();
 
 
-    //Lógica de negócio é integrada na classe de serviço para o cliente
-    private ClientService _clientService = new ClientService();
-
+    //operação de POST para adicionar um cliente
     [HttpPost("add")]
     public IActionResult AddClient(string cpf, string name, string email)
     {
@@ -25,6 +26,7 @@ public class ClientController : ControllerBase
         return Ok(new_client);
     }
 
+    //Operação de GET para apresentar todos os clientes
     [HttpGet("showAll")]
     public IActionResult ShowAllClients()
     {
@@ -32,6 +34,7 @@ public class ClientController : ControllerBase
         return Ok(clients);
     }
 
+    //Operação de GET para apresentar um cliente com um dado 'cpf'
     [HttpGet("show/{cpf}")]
     public IActionResult ShowClient(string cpf)
     {
@@ -39,6 +42,7 @@ public class ClientController : ControllerBase
         return client != null ? Ok(client) : NotFound();
     }
 
+    //Operação PUT para atualizar o email de um clinte com um dado 'cpf'
     [HttpPut("update_email/{cpf}")]
     public IActionResult UpdateEmailClient(string cpf, string email)
     {
@@ -46,6 +50,8 @@ public class ClientController : ControllerBase
         return Ok(email);
     }
 
+
+   //Operação PUT para atualizar o nome de um cliente com um dado 'cpf'
     [HttpPut("update_name/{cpf}")]
     public IActionResult UpdateNameClient(string cpf, string name)
     {
@@ -53,6 +59,7 @@ public class ClientController : ControllerBase
         return Ok(name);
     }
 
+    //operação de deletar um cliente com um dado 'cpf'
     [HttpDelete("delete/{cpf}")]
     public IActionResult DeleteClient(string cpf)
     {
