@@ -1,6 +1,6 @@
 namespace Challenge.Models{
 
-    //Classe modelo do cliente
+    //Classe modelo do cliente, define a entidade a ser usada com modelo de dados
     public class Client
     {
         //Atributos no cliente
