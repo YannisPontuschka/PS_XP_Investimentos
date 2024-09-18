@@ -2,19 +2,19 @@ using System;
 using System.Text.RegularExpressions;
 
 namespace Challenge.Helper
-{   
-    //classe de validação do cliente, testa a validez de seus atributos.
+{
+    //Classe de validação dos atributos da classe cliente.
     public class ClientValidation
     {
         public static bool ValidateCPF(string cpf)
         {
-
+            //Testa se é vazio
             if (string.IsNullOrWhiteSpace(cpf))
                 return false;
-            //validação do formato do CPF
+            //Validação do formato do CPF
             if (!HasValidCpfStructure(cpf))
                 return false;
-            //validação da corretude dos números do CPF.
+            //Validação da corretude dos números do CPF.
             if (!HasValidCpfDigits(cpf))
                 return false;
 
@@ -32,7 +32,7 @@ namespace Challenge.Helper
                 return false;
 
             // Verifica se o nome contém apenas letras
-            if (!Regex.IsMatch(name, @"^[a-zA-Z\s]+$"))
+            if (!HasValidNameStructure(name))
                 return false;
 
             return true;
@@ -101,7 +101,7 @@ namespace Challenge.Helper
 
         private static bool HasValidNameStructure(string name)
         {
-            if (!Regex.IsMatch(name, @"^[a-zA-Z\s]+$"))
+            if (!Regex.IsMatch(name, @"^[a-zA-Zà-úÀ-Ú\s]{3,}$"))
                 return false;
             return true;
         }
