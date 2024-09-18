@@ -22,7 +22,7 @@ namespace Challenge.Services
 
             //chama-se o construtor do namespace Models
             Client newClient = new Client(cpf, name, email);
-            clients_dictionary.Add(newClient.cpf, newClient);
+            clients_dictionary.Add(newClient.Cpf, newClient);
             return newClient;
         }
 
@@ -39,12 +39,12 @@ namespace Challenge.Services
 
         public void UpdateEmail(string cpf, string email)
         {
-            clients_dictionary[cpf].email = email;
+            clients_dictionary[cpf].Email = email;
         }
 
         public void UpdateName(string cpf, string name)
         {
-            clients_dictionary[cpf].name = name;
+            clients_dictionary[cpf].Name = name;
         }
 
         public void DeleteClient(string cpf)

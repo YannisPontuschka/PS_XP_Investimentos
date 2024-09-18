@@ -40,7 +40,7 @@ namespace Challenge.Controllers
 
 
                 var new_client = _clientService.AddClient(cpf, name, email);
-                return Ok(new_client);
+                return Ok($"Usuário '{cpf}'criado.");
             }
             catch (Exception ex)
             {

@@ -4,16 +4,16 @@ namespace Challenge.Models{
     public class Client
     {
         //Atributos no cliente
-        public string cpf {get; set;} 
-        public string name {get; set;}
-        public string email {get; set;}
+        public string Cpf {get; set;} 
+        public string Name {get; set;}
+        public string Email {get; set;}
 
         //Construtor da classe cliente
         public Client(string cpf, string name, string email)
             {
-                this.cpf = cpf;
-                this.name = name;
-                this.email = email;
+                this.Cpf = cpf;
+                this.Name = name;
+                this.Email = email;
             }
     }
 }
