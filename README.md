@@ -98,7 +98,8 @@ O projeto está organizado nas seguintes pastas:
 ### Requisitos
 - **Git**: Precisa estar instalado.
 - **.NET SDK**: Versão 8.0 ou superior.
-  
+
+OBS: as notações estão para o sistema Windows.
 1. Clone o repositório:
 
    ```bash
@@ -106,14 +107,16 @@ O projeto está organizado nas seguintes pastas:
 2. Navegue até a pasta do projeto
 
    ```bash
-    cd PS_XP_Investimentos
+   cd .\PS_XP_Investimentos
 
 3. Execute a Aplicação
    
      ```bash
-       dotnet run --project .\Challenge\Challenge.csproj
+   dotnet run --project .\Challenge\Challenge.csproj
 
-Postman e Swagger foram utilizados pelo autor para testes. Abaixo segue uma imagem da apresentação das rotas pelo Swagger
+
+Com a aplicação em execução, o uso do Swagger é uma possível abordagem para manusear as operações. Em um navegador, insira `localhost:<porta>/swagger/index.html`, tal que `<porta>`se refere à porta que a aplicação está disponível. 
+Postman e Swagger foram utilizados pelo autor para testes. Abaixo segue uma imagem da apresentação das rotas pelo Swagger/
 
 ![image](https://github.com/user-attachments/assets/6fa70b18-1ea1-475c-9d69-03c696b09a79)
 
@@ -121,7 +124,7 @@ Postman e Swagger foram utilizados pelo autor para testes. Abaixo segue uma imag
 ## Execução de testes
 Para executar os testes unitários e gerar o relatório de cobertura de código, execute o seguinte comando, a partir da pasta `PS_XP_investimentos`: 
 
-      dotnet test ChallengeTests/ChallengeTests.csproj /p:CollectCoverage=true
+    dotnet test .\ChallengeTests\ChallengeTests.csproj /p:CollectCoverage=true 
 
 Espera-se uma saída como essa:
 
@@ -146,7 +149,7 @@ Se execução dos testes não funcioar, execute o código abaixo para instalar o
 * Xunit para testes unitários
 * Coverlet para quantificação da cobertura de testes
 
-## Referencias
+## Referências
 Segue algumas fontes de estudo para o desenvolviemnto da API descrita.
 
 * [Curso XP Inc. - Full Stack Developer](https://web.dio.me/track/coding-the-future-xp-full-stack-developer)
