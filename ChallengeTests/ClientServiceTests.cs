@@ -27,7 +27,7 @@ namespace ChallengeTests
             string email = "yannisp77@gmail.com";
 
             // Act
-            Client new_client = client_service.AddClient(cpf, name, email);
+            ClientModel new_client = client_service.AddClient(cpf, name, email);
 
             // Assert
             Assert.NotNull(new_client);
@@ -48,7 +48,7 @@ namespace ChallengeTests
             client_service.AddClient(cpf, name, email);
 
             // Act
-            Client? client = client_service.GetClientByCpf(cpf);
+            ClientModel? client = client_service.GetClientByCpf(cpf);
 
             // Assert
             Assert.NotNull(client);
@@ -63,16 +63,16 @@ namespace ChallengeTests
         public void Should_ReturnNull_WhenClientDoesNotExist()
         {
             // Act
-            Client? client = client_service.GetClientByCpf("000.000.000-00");
+            ClientModel? client = client_service.GetClientByCpf("000.000.000-00");
 
             // Assert
             Assert.Null(client);
         }
 
-        //Teste para atualização do email do cliente
 
+        //Teste para atualização de email e nome do cliente
         [Fact]
-        public void Should_UpdateEmail_Successfully()
+        public void Should_Update_Successfully()
         {
             // Arrange
             string cpf = "376.352.140-20";
@@ -80,36 +80,39 @@ namespace ChallengeTests
             string email = "yax@unicamp.com";
             client_service.AddClient(cpf, name, email);
 
+            string new_name = "yannis";
             string new_email = "yax77@usp.br";
 
+
             // Act
-            client_service.UpdateEmail(cpf, new_email);
-            Client? updatedClient = client_service.GetClientByCpf(cpf);
+            client_service.UpdateClient(cpf, new_name, new_email);
+            ClientModel? updated_client = client_service.GetClientByCpf(cpf);
 
             // Assert
-            Assert.Equal(new_email, updatedClient?.Email);
+            Assert.True(new_email == updated_client?.Email && new_name == updated_client?.Name);
         }
 
-        //Teste para atualização do nome do cliente
-
-        [Fact]
-        public void Should_UpdateName_Successfully()
+        public void Should_Fail_ToUpdate()
         {
             // Arrange
-            string cpf = "042.133.660-90";
-            string name = "Pedro";
-            string email = "pedro@unicamp.com";
+            string cpf = "376.352.140-20";
+            string name = "Yax";
+            string email = "yax@unicamp.com";
             client_service.AddClient(cpf, name, email);
 
-            string new_name = "Pedrao";
+            string new_name = "a a t";
+            string new_email = "yax77!usp.br";
+
 
             // Act
-            client_service.UpdateEmail(cpf, new_name);
-            Client? updatedClient = client_service.GetClientByCpf(cpf);
+            client_service.UpdateClient(cpf, new_name, new_email);
+            ClientModel? updated_client = client_service.GetClientByCpf(cpf);
 
             // Assert
-            Assert.Equal(new_name, updatedClient?.Email);
+            Assert.False(new_email == updated_client?.Email && new_name == updated_client?.Name);
         }
+
+
 
         //Teste para remoção de um cliente do banco de dados
 
@@ -124,7 +127,7 @@ namespace ChallengeTests
 
             // Act
             client_service.DeleteClient(cpf);
-            Client? client = client_service.GetClientByCpf(cpf);
+            ClientModel? client = client_service.GetClientByCpf(cpf);
 
             // Assert
             Assert.Null(client);
