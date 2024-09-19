@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Challenge.Exceptions;
 using Challenge.Helper;
 using Challenge.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace Challenge.Controllers
 {
@@ -22,31 +22,30 @@ namespace Challenge.Controllers
 
         //operação de POST para adicionar um cliente
         [HttpPost("add")]
-        public IActionResult AddClient(string cpf, string name, string email)
+        public IActionResult AddClient([FromBody] AddClientRequestType client_request)
         {
             try
             {
-                if (!ClientValidation.ValidateCPF(cpf))
-                    return BadRequest($"CPF '{cpf}' inválido.");
+                // Lógica para adicionar o cliente
+                var cpf = client_request.Cpf;
+                var name = client_request.Name;
+                var email = client_request.Email;
 
-                if (_clientService.GetClientByCpf(cpf) != null)
-                    return StatusCode(403, "Proibido inserir um cliente com CPF já existente no banco de dados.");
+                bool has_valid_client = _clientService.ValidateClient(cpf, name, email);
+                bool already_created_client = _clientService.GetClientByCpf(cpf) != null;
 
-                if (!ClientValidation.ValidateName(name))
-                    return BadRequest($"Nome '{name}' Inválido");
+                if (!has_valid_client || already_created_client)
+                    return BadRequest("CPF, nome ou email inválido(s) ou cliente já existente");
 
-                if (!ClientValidation.ValidateEmail(email))
-                    return BadRequest($"Email '{email}' inválido.");
-
-
-                var new_client = _clientService.AddClient(cpf, name, email);
-                return Ok($"Usuário '{cpf}'criado.");
+                _clientService.AddClient(cpf, name, email);
+                return Ok($"Usuário '{cpf}' criado.");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro no servidor - {ex.Message}");
             }
         }
+
 
         //Operação de GET para apresentar todos os clientes
         [HttpGet("showAll")]
@@ -72,10 +71,9 @@ namespace Challenge.Controllers
         {
             try
             {
-                if (!ClientValidation.ValidateCPF(cpf))
-                    return BadRequest($"CPF '{cpf}' inválido.");
                 var client = _clientService.GetClientByCpf(cpf);
-                return client != null ? Ok(client) : NotFound($"Cliente com CPF '{cpf}' não encontrado.");
+                bool client_is_found = client != null;
+                return client_is_found ? Ok(client) : BadRequest($"CPF '{cpf}' inválido ou não encontrado.");
             }
             catch (Exception ex)
             {
@@ -85,22 +83,33 @@ namespace Challenge.Controllers
         }
 
         //Operação PUT para atualizar o email de um clinte com um dado 'cpf'
-        [HttpPut("update_email/{cpf}")]
-        public IActionResult UpdateEmailClient(string cpf, string email)
+        [HttpPut("update/{cpf}")]
+        public IActionResult UpdateClient([FromRoute] string cpf, [FromBody] UpdateClientRequestType update_client)
         {
             try
             {
-                if (!ClientValidation.ValidateCPF(cpf))
-                    return BadRequest($"CPF '{cpf}' inválido.");
 
-                if (_clientService.GetClientByCpf(cpf) == null)
-                    return NotFound($"Cliente com CPF '{cpf}' não encontrado.");
+                var client = _clientService.GetClientByCpf(cpf);
+                if (client == null)
+                    return NotFound("Cliente não encontrado.");
 
-                if (!ClientValidation.ValidateEmail(email))
-                    return BadRequest($"Email novo '{email}' é inválido.");
+                bool has_valid_types = cpf.GetType() != typeof(string) || update_client?.Name?.GetType() != typeof(string) || update_client?.Email?.GetType() != typeof(string);
 
-                _clientService.UpdateEmail(cpf, email);
-                return Ok($"Email do cliente '{cpf}' atualizado para '{email}'.");
+
+                if (update_client?.Name != null)
+                    client.Name = update_client.Name;
+                if (update_client?.Email != null)
+                    client.Email = update_client.Email;
+
+                string name = client.Name;
+                string email = client.Email;
+
+                bool client_is_valid = _clientService.ValidateClient(cpf, name, email);
+                if (!client_is_valid)
+                    return BadRequest("CPF, Nome ou Email inválido(s)");
+
+                _clientService.UpdateClient(cpf, name, email);
+                return Ok($"Dados do cliente '{cpf}' atualizados.");
             }
             catch (Exception ex)
             {
@@ -109,27 +118,6 @@ namespace Challenge.Controllers
 
         }
 
-
-        //Operação PUT para atualizar o nome de um cliente com um dado 'cpf'
-        [HttpPut("update_name/{cpf}")]
-        public IActionResult UpdateNameClient(string cpf, string name)
-        {
-            try
-            {
-                if (!ClientValidation.ValidateCPF(cpf))
-                    return BadRequest($"CPF '{cpf}' inválido.");
-
-                if (_clientService.GetClientByCpf(cpf) == null)
-                    return NotFound($"Cliente com CPF '{cpf}' não encontrado.");
-
-                _clientService.UpdateName(cpf, name);
-                return Ok($"Nome do cliente '{cpf}' atualizado para '{name}'");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro no servidor - {ex.Message}");
-            }
-        }
 
         //operação de deletar um cliente com um dado 'cpf'
         [HttpDelete("delete/{cpf}")]
@@ -137,13 +125,13 @@ namespace Challenge.Controllers
         {
             try
             {
-                if (!ClientValidation.ValidateCPF(cpf))
-                    return BadRequest($"CPF '{cpf}' inválido.");
+                var client_for_delete = _clientService.GetClientByCpf(cpf);
 
-                if (_clientService.GetClientByCpf(cpf) == null)
-                    return NotFound($"Cliente com CPF '{cpf}' não encontrado.");
+                if (client_for_delete == null)
+                    return BadRequest($"Remoção não possível. CPF não encontrado ou inválido.");
 
                 _clientService.DeleteClient(cpf);
+
                 return Ok($"Cliente com CPF '{cpf}' deletado.");
             }
 
