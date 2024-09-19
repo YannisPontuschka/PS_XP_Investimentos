@@ -85,7 +85,7 @@ namespace Challenge.Helper
 
         private static bool HasValidCpfStructure(string cpf)
         {
-            string cpf_pattern = @"\d{3}.\d{3}.\d{3}-\d{2}";
+            string cpf_pattern = @"^\d{3}.\d{3}.\d{3}-\d{2}$";
             if (!Regex.IsMatch(cpf, cpf_pattern))
                 return false;
             return true;

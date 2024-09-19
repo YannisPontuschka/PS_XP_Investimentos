@@ -71,18 +71,16 @@ namespace ChallengeTests
 
 
         //Teste para atualização de email e nome do cliente
-        [Fact]
-        public void Should_Update_Successfully()
+
+        [Theory]
+        [InlineData("376.352.140-20", "Yax", "yax@unicamp.com", "Yex", "yax@usp.br")]
+        [InlineData("522.242.610-63", "João", "bota@unicamp.com", "Jota", "Jota@usp.br")]
+        [InlineData("798.350.110-28", "Pedro", "pedro@unicamp.com", "Pedrão", "pedro@unicamp.com")]
+        [InlineData("212.323.440-01", "Sávio", "savio@unicamp.com", "Saviola", "saviola@usp.com")]
+        public void Should_Update_Successfully(string cpf, string old_name, string old_email, string new_email, string new_name)
         {
             // Arrange
-            string cpf = "376.352.140-20";
-            string name = "Yax";
-            string email = "yax@unicamp.com";
-            client_service.AddClient(cpf, name, email);
-
-            string new_name = "yannis";
-            string new_email = "yax77@usp.br";
-
+            client_service.AddClient(cpf, old_name, old_email);
 
             // Act
             client_service.UpdateClient(cpf, new_name, new_email);
@@ -91,27 +89,6 @@ namespace ChallengeTests
             // Assert
             Assert.True(new_email == updated_client?.Email && new_name == updated_client?.Name);
         }
-
-        public void Should_Fail_ToUpdate()
-        {
-            // Arrange
-            string cpf = "376.352.140-20";
-            string name = "Yax";
-            string email = "yax@unicamp.com";
-            client_service.AddClient(cpf, name, email);
-
-            string new_name = "a a t";
-            string new_email = "yax77!usp.br";
-
-
-            // Act
-            client_service.UpdateClient(cpf, new_name, new_email);
-            ClientModel? updated_client = client_service.GetClientByCpf(cpf);
-
-            // Assert
-            Assert.False(new_email == updated_client?.Email && new_name == updated_client?.Name);
-        }
-
 
 
         //Teste para remoção de um cliente do banco de dados
