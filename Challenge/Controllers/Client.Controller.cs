@@ -10,8 +10,7 @@ using Microsoft.VisualBasic;
 namespace Challenge.Controllers
 {
 
-    //Classe controladora do cliente, lida com as requisições
-
+    //Classe controladora do cliente, trata as requisições
     [ApiController]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
@@ -19,14 +18,12 @@ namespace Challenge.Controllers
         //referência à classe serviço o cliente
         private static ClientService _clientService = new ClientService();
 
-
         //operação de POST para adicionar um cliente
         [HttpPost("add")]
         public IActionResult AddClient([FromBody] AddClientRequestType client_request)
         {
             try
             {
-                // Lógica para adicionar o cliente
                 var cpf = client_request.Cpf;
                 var name = client_request.Name;
                 var email = client_request.Email;
@@ -82,7 +79,7 @@ namespace Challenge.Controllers
             }
         }
 
-        //Operação PUT para atualizar o email de um clinte com um dado 'cpf'
+        //Operação PUT para atualizar o email e/ou nome de um cliente
         [HttpPut("update/{cpf}")]
         public IActionResult UpdateClient([FromRoute] string cpf, [FromBody] UpdateClientRequestType update_client)
         {

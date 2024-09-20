@@ -9,6 +9,7 @@ namespace ChallengeTests
 
     public class ClientServiceTests
     {
+        //Referência à classe de serviço do cliente
         private ClientService client_service;
 
         public ClientServiceTests()
@@ -17,7 +18,6 @@ namespace ChallengeTests
         }
 
         //Teste para adição do cliente
-
         [Fact]
         public void Should_AddClient_Successfully()
         {
@@ -37,7 +37,6 @@ namespace ChallengeTests
         }
 
         //Teste para consulta pelo cliente
-
         [Fact]
         public void Should_GetClientByCpf_ReturnsCorrectClient()
         {
@@ -58,7 +57,6 @@ namespace ChallengeTests
         }
 
         //Teste para consulta pelo cliente quando não existe
-
         [Fact]
         public void Should_ReturnNull_WhenClientDoesNotExist()
         {
@@ -71,7 +69,6 @@ namespace ChallengeTests
 
 
         //Teste para atualização de email e nome do cliente
-
         [Theory]
         [InlineData("376.352.140-20", "Yax", "yax@unicamp.com", "Yex", "yax@usp.br")]
         [InlineData("522.242.610-63", "João", "bota@unicamp.com", "Jota", "Jota@usp.br")]
@@ -92,7 +89,6 @@ namespace ChallengeTests
 
 
         //Teste para remoção de um cliente do banco de dados
-
         [Fact]
         public void Should_DeleteClient_Successfully()
         {
