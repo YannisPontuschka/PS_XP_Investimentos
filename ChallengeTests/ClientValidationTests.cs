@@ -12,12 +12,12 @@ namespace ChallengeTests
         [InlineData("123.123.123", false)] // CPF com menos de 11 dígitos
         [InlineData("a2rf2341521fsa", false)] // CPF com estrutura incorreta
         public void ValidateCPF_ShouldReturnExpectedResult(string cpf, bool expected)
-
+        {
             // Act
             bool is_cpf_valid = ClientValidation.ValidateCPF(cpf);
 
-        // Assert
-        Assert.True(is_cpf_valid == expected);
+            // Assert
+            Assert.True(is_cpf_valid == expected);
         }
 
         // Testes para Nome
