@@ -1,6 +1,6 @@
-# API de Cadastro de Clientes - Processo Seletivo XP
+# API de Cadastro de Clientes 
 
-Esta API foi desenvolvida como parte de um processo seletivo da XP, com o objetivo de realizar o cadastro de clientes. Ela implementa operações CRUD (Create, Read, Update, Delete) e validações de CPF, Nome e Email. A aplicação foi construída em .NET 8.0 e inclui testes unitários para garantir a qualidade do código.
+Esta API foi desenvolvida com o objetivo de realizar o cadastro de clientes. Ela implementa operações CRUD (Create, Read, Update, Delete) e validações de CPF, Nome e Email. A aplicação foi construída em .NET 8.0 e inclui testes unitários para garantir a qualidade do código.
 
 ## Rotas Disponíveis da API
 
